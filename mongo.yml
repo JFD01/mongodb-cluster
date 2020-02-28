@@ -93,6 +93,14 @@
       notify:
         - restart mongod
 
+    - name: Edit Mongos service
+      lineinfile:
+        path: /lib/systemd/system/mongod.service
+        regexp: '^ExecStart=/usr/bin/mongod --config /etc/mongod.conf'
+        line: ExecStart=/usr/bin/mongos --config /etc/mongod.conf
+      notify:
+        - restart mongod
+
   handlers:
     - name: restart mongod
       service:
