@@ -1,0 +1,4 @@
+{% include './mongod.conf.j2' %}
+
+sharding:
+  configDB: mongo-cfg/{% for server in groups['mongo-cfg'] %}{{ hostvars[server].ansible_host }}:27017{% if not loop.last %},{% endif %}{% endfor %}

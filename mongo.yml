@@ -45,6 +45,14 @@
       notify:
         - restart mongod
 
+    - name: Initialize mongo rs
+      template:
+        src: mongo-cfg.js.j2
+        dest: /tmp/mongo-cfg.js
+
+    - name: Run mongo rs
+      shell: /usr/bin/mongo < /tmp/mongo-cfg.js
+
   handlers:
     - name: restart mongod
       service:
@@ -57,6 +65,30 @@
     - name: Config MongoDB
       template:
         src: mongod-shard.conf.j2
+        dest: /etc/mongod.conf
+      notify:
+        - restart mongod
+
+    - name: Initialize mongo rs
+      template:
+        src: mongo-shard.js.j2
+        dest: /tmp/mongo-shard.js
+
+    - name: Run mongo rs
+      shell: /usr/bin/mongo < /tmp/mongo-shard.js
+
+  handlers:
+    - name: restart mongod
+      service:
+        name: mongod
+        state: restarted
+
+- hosts: mongo-router
+  remote_user: root
+  tasks:
+    - name: Config MongoDB
+      template:
+        src: mongod-router.conf.j2
         dest: /etc/mongod.conf
       notify:
         - restart mongod
