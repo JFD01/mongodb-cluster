@@ -27,10 +27,42 @@
         src: mongod.conf.j2
         dest: /etc/mongod.conf
       notify:
-        - reload mongod
+        - restart mongod
 
   handlers:
-    - name: reload mongod
+    - name: restart mongod
+      service:
+        name: mongod
+        state: restarted
+
+- hosts: mongo-cfg
+  remote_user: root
+  tasks:
+    - name: Config MongoDB
+      template:
+        src: mongod-cfg.conf.j2
+        dest: /etc/mongod.conf
+      notify:
+        - restart mongod
+
+  handlers:
+    - name: restart mongod
+      service:
+        name: mongod
+        state: restarted
+
+- hosts: mongo-shard
+  remote_user: root
+  tasks:
+    - name: Config MongoDB
+      template:
+        src: mongod-shard.conf.j2
+        dest: /etc/mongod.conf
+      notify:
+        - restart mongod
+
+  handlers:
+    - name: restart mongod
       service:
         name: mongod
         state: restarted

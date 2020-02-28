@@ -1,8 +1,7 @@
 [mongo:children]
 mongo-router
 mongo-cfg
-mongo-shardA
-mongo-shardB
+mongo-shard
 
 [mongo-router]
 mongo01 ansible_host=10.0.0.1
@@ -11,6 +10,10 @@ mongo02 ansible_host=10.0.0.2
 [mongo-cfg]
 mongo03 ansible_host=10.0.0.3
 mongo04 ansible_host=10.0.0.4
+
+[mongo-shard:children]
+mongo-shardA
+mongo-shardB
 
 [mongo-shardA]
 mongo05 ansible_host=10.0.0.5

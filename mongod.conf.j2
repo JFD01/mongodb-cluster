@@ -21,7 +21,8 @@ systemLog:
 # network interfaces
 net:
   port: 27017
-  bindIp: 127.0.0.1{% for server in groups['mongo'] %}, {{ hostvars[server].ansible_host }}{% endfor %}
+  bindIp: 127.0.0.1, {{ ansible_host }}
+# {% for server in groups['mongo'] %}, {{ hostvars[server].ansible_host }}{% endfor %}
 
 
 # how the process runs
