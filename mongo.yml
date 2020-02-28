@@ -1,0 +1,36 @@
+---
+
+- hosts: mongo
+  remote_user: root
+  tasks:
+    - name: Add MongoDB apt key
+      apt_key:
+        url: https://www.mongodb.org/static/pgp/server-4.2.asc
+        state: present
+
+    - name: Add MongoDB repository
+      apt_repository:
+        repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse
+
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        update_cache: yes
+
+    - name: Start service MongoDB
+      service:
+        name: mongod
+        state: started
+
+    - name: Config MongoDB
+      template:
+        src: mongod.conf.j2
+        dest: /etc/mongod.conf
+      notify:
+        - reload mongod
+
+  handlers:
+    - name: reload mongod
+      service:
+        name: mongod
+        state: restarted

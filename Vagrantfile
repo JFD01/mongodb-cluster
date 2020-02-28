@@ -19,9 +19,9 @@ Vagrant.configure("2") do |config|
       echo "#{ssh_priv_key}" > /root/.ssh/id_rsa
       chmod 600 /root/.ssh/id_rsa
       echo "#{ssh_priv_key}" > /home/vagrant/.ssh/id_rsa
-      chown vagrant /home/vagrant/.ssh/id_rsa
+      chown vagrant:vagrant /home/vagrant/.ssh/id_rsa
       chmod 600 /home/vagrant/.ssh/id_rsa
-      apt install -y python
+      apt-get install -y python
     SHELL
   end
 
